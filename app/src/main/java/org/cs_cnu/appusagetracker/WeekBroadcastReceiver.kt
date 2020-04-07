@@ -20,6 +20,7 @@ import kotlin.collections.HashMap
 
 class WeekBroadcastReceiver : BroadcastReceiver(){
     override fun onReceive(context: Context?, intent: Intent?) {
+        saveTestValues()
         saveUsageEvents(getUsageEvents())
     }
 
@@ -29,7 +30,6 @@ class WeekBroadcastReceiver : BroadcastReceiver(){
 
         val usageStatsManager = MainActivity().getSystemService( Context.USAGE_STATS_SERVICE) as UsageStatsManager
         return usageStatsManager.queryEvents(cal.timeInMillis, System.currentTimeMillis());
-
     }
     private fun saveUsageEvents(usageEvents: UsageEvents) {
         val path :String = "/sdcard/"
@@ -55,6 +55,16 @@ class WeekBroadcastReceiver : BroadcastReceiver(){
                 writer.writeNext(tmp)
             }
         }
+        writer.close()
+    }
+    private fun saveTestValues(){
+        val path :String = "/sdcard/"
+        val filename:String = "test.csv"
+        Log.e(path,path)
+        val writer = CSVWriter(FileWriter(path+filename))
+        writer.writeNext(Array<String>(3, {"aaa"}))
+        writer.writeNext(Array<String>(3, {"bbb"}))
+        writer.writeNext(Array<String>(3, {"ccc"}))
         writer.close()
     }
 }
