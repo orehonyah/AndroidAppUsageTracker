@@ -29,11 +29,11 @@ class WeekBroadcastReceiver : BroadcastReceiver(){
         cal.add(Calendar.YEAR, -1)
 
         val usageStatsManager = MainActivity().getSystemService( Context.USAGE_STATS_SERVICE) as UsageStatsManager
-        return usageStatsManager.queryEvents(cal.timeInMillis, System.currentTimeMillis());
+        return usageStatsManager.queryEvents(cal.timeInMillis, System.currentTimeMillis())
     }
     private fun saveUsageEvents(usageEvents: UsageEvents) {
-        val path :String = "/sdcard/"
-        val filename:String = "appusage.csv"
+        val path = "/sdcard/"
+        val filename = "appusage"+Date(System.currentTimeMillis()).toString()+".csv"
         Log.e(path,path)
         val writer = CSVWriter(FileWriter(path+filename))
 
@@ -41,7 +41,7 @@ class WeekBroadcastReceiver : BroadcastReceiver(){
         while(usageEvents.hasNextEvent()){
             val event = UsageEvents.Event()
             usageEvents.getNextEvent(event)
-            val tmp = Array<String>(3,{""})
+            val tmp = Array(3,{""})
             tmp[0] = event.packageName
             tmp[1] = event.timeStamp.toString()
             tmp[2] = event.eventType.toString()
@@ -58,13 +58,13 @@ class WeekBroadcastReceiver : BroadcastReceiver(){
         writer.close()
     }
     private fun saveTestValues(){
-        val path :String = "/sdcard/"
-        val filename:String = "test.csv"
+        val path = "/sdcard/"
+        val filename = "test.csv"
         Log.e(path,path)
         val writer = CSVWriter(FileWriter(path+filename))
-        writer.writeNext(Array<String>(3, {"aaa"}))
-        writer.writeNext(Array<String>(3, {"bbb"}))
-        writer.writeNext(Array<String>(3, {"ccc"}))
+        writer.writeNext(Array(3, {"aaa"}))
+        writer.writeNext(Array(3, {"bbb"}))
+        writer.writeNext(Array(3, {"ccc"}))
         writer.close()
     }
 }
