@@ -1,62 +1,31 @@
 package org.cs_cnu.appusagetracker
 
-import android.app.AppOpsManager
+import android.app.IntentService
+import android.app.Service
 import android.app.usage.UsageEvents
 import android.app.usage.UsageStatsManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.os.Build
-import android.os.Process
+import android.os.IBinder
 import android.util.Log
-import androidx.core.app.ActivityCompat.requestPermissions
-import androidx.core.content.ContextCompat.getSystemService
+import android.widget.Toast
 import com.opencsv.CSVWriter
-import kotlinx.android.synthetic.main.activity_main.*
 import java.io.FileWriter
 import java.math.BigInteger
 import java.util.*
 import kotlin.collections.HashMap
 
+
 class WeekBroadcastReceiver : BroadcastReceiver(){
     override fun onReceive(context: Context?, intent: Intent?) {
+        val actionName = intent!!.action
+        Toast.makeText(context, "받은 액션 : $actionName", Toast.LENGTH_SHORT).show()
+        val intent1 = Intent(context,SaveUsageEventsService::class.java)
+        context?.startService(intent1)
         saveTestValues()
-        saveUsageEvents(getUsageEvents())
     }
 
-    private fun getUsageEvents() : UsageEvents {
-        val cal = Calendar.getInstance()
-        cal.add(Calendar.YEAR, -1)
-
-        val usageStatsManager = MainActivity().getSystemService( Context.USAGE_STATS_SERVICE) as UsageStatsManager
-        return usageStatsManager.queryEvents(cal.timeInMillis, System.currentTimeMillis())
-    }
-    private fun saveUsageEvents(usageEvents: UsageEvents) {
-        val path = "/sdcard/"
-        val filename = "appusage"+Date(System.currentTimeMillis()).toString()+".csv"
-        Log.e(path,path)
-        val writer = CSVWriter(FileWriter(path+filename))
-
-        val started = HashMap<String, Array<String>>()
-        while(usageEvents.hasNextEvent()){
-            val event = UsageEvents.Event()
-            usageEvents.getNextEvent(event)
-            val tmp = Array(3,{""})
-            tmp[0] = event.packageName
-            tmp[1] = event.timeStamp.toString()
-            tmp[2] = event.eventType.toString()
-            if(event.eventType == UsageEvents.Event.ACTIVITY_RESUMED){
-                started[event.packageName] = tmp
-            }
-            else if(event.eventType == UsageEvents.Event.ACTIVITY_PAUSED){
-                val tmp1 = started[event.packageName] ?: continue
-                tmp[2] = (event.timeStamp - BigInteger(tmp1[1]).toLong()).toString()
-                started.remove(event.packageName)
-                writer.writeNext(tmp)
-            }
-        }
-        writer.close()
-    }
     private fun saveTestValues(){
         val path = "/sdcard/"
         val filename = "test.csv"

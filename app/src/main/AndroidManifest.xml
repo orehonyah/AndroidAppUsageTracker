@@ -17,6 +17,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <service android:name=".SaveUsageEventsService"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,7 +27,10 @@
         </activity>
         <receiver android:name=".WeekBroadcastReceiver">
             <intent-filter>
+                <action android:name="org.cs_cnu.appusagetracker.testaction" />
+                <!--
                 <action android:name="android.intent.action.DATE_CHANGED" />
+                -->
             </intent-filter>
         </receiver>
     </application>

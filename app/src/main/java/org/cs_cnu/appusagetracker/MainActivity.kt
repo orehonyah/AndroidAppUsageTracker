@@ -39,12 +39,15 @@ class MainActivity : AppCompatActivity() {
                 startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
             } else {
                 //val usageStats = getUsuageStats()
-                var usageEvents = getUsageEvents()
                 //printUsageStats(usageStats)
-                printUsageEvents(usageEvents)
+                var usageEvents = getUsageEvents()
+                printUsageEvents(usageEvents)//프린팅
                 //saveUsageStats(usageStats)
+                /*
                 usageEvents = getUsageEvents()
                 saveUsageEvents(usageEvents)
+                 */
+                sendBroadcast(Intent("org.cs_cnu.appusagetracker.testaction"))
             }
 
         }
