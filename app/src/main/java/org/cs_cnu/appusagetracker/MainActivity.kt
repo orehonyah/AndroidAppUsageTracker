@@ -146,7 +146,9 @@ class MainActivity : AppCompatActivity() {
         val writer = CSVWriter(FileWriter(path+filename))
 
         val started = HashMap<String, Array<String>>()
+        var count = 0
         while(usageEvents.hasNextEvent()){
+            count++
             val event = UsageEvents.Event()
             usageEvents.getNextEvent(event)
             val tmp = Array<String>(3,{""})
@@ -162,6 +164,7 @@ class MainActivity : AppCompatActivity() {
                 started.remove(event.packageName)
                 writer.writeNext(tmp)
             }
+            if(count>100) break
         }
         writer.close()
     }

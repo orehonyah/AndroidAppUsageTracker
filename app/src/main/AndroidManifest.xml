@@ -28,9 +28,7 @@
         <receiver android:name=".WeekBroadcastReceiver">
             <intent-filter>
                 <action android:name="org.cs_cnu.appusagetracker.testaction" />
-                <!--
                 <action android:name="android.intent.action.DATE_CHANGED" />
-                -->
             </intent-filter>
         </receiver>
     </application>
